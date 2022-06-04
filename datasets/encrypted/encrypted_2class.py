@@ -32,7 +32,7 @@ class Encrypted2Class(datasets.MNIST):
         ("t10k-images-idx3-ubyte.gz", ""),
         ("t10k-labels-idx1-ubyte.gz", ""),
     ]
-    classes = ["Benign", "Malign"]
+    classes = ["Novpn", "Vpn"]
 
     @property
     def sub_raw_folder(self) -> str:

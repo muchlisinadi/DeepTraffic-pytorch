@@ -35,7 +35,20 @@ class Encrypted12Class(datasets.MNIST):
         ("t10k-images-idx3-ubyte.gz", ""),
         ("t10k-labels-idx1-ubyte.gz", ""),
     ]
-    classes = ["Benign", "Malign"]
+    classes = [
+        "Chat",
+        "Email",
+        "File",
+        "P2p",
+        "Streaming",
+        "Voip",
+        "Vpn_Chat",
+        "Vpn_Email",
+        "Vpn_File",
+        "Vpn_P2p",
+        "Vpn_Streaming",
+        "Vpn_Voip",
+    ]
 
     @property
     def sub_raw_folder(self) -> str:
