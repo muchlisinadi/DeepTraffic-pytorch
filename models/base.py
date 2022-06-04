@@ -35,48 +35,48 @@ class LitBase(pl.LightningModule):
         raise NotImplementedError
 
     def logger_metrics(
-        self, suffix, pred, labels, position, is_step, is_train=True, is_write=True
+        self, suffix, pred, labels, position, on_step, on_train=True, is_write=True
     ):
 
-        if is_train:
+        if on_train:
             accuracy = (
-                self.train_acc(pred, labels) if is_step else self.train_acc.compute()
+                self.train_acc(pred, labels) if on_step else self.train_acc.compute()
             )
-            f1 = self.train_f1(pred, labels) if is_step else self.train_f1.compute()
+            f1 = self.train_f1(pred, labels) if on_step else self.train_f1.compute()
             p_macro = (
                 self.train_pmacro(pred, labels)
-                if is_step
+                if on_step
                 else self.train_pmacro.compute()
             )
             p_micro = (
                 self.train_pmicro(pred, labels)
-                if is_step
+                if on_step
                 else self.train_pmicro.compute()
             )
             r_macro = (
                 self.train_rmacro(pred, labels)
-                if is_step
+                if on_step
                 else self.train_rmacro.compute()
             )
             r_micro = (
                 self.train_rmicro(pred, labels)
-                if is_step
+                if on_step
                 else self.train_rmicro.compute()
             )
         else:
-            accuracy = self.val_acc(pred, labels) if is_step else self.val_acc.compute()
-            f1 = self.val_f1(pred, labels) if is_step else self.val_f1.compute()
+            accuracy = self.val_acc(pred, labels) if on_step else self.val_acc.compute()
+            f1 = self.val_f1(pred, labels) if on_step else self.val_f1.compute()
             p_macro = (
-                self.val_pmacro(pred, labels) if is_step else self.val_pmacro.compute()
+                self.val_pmacro(pred, labels) if on_step else self.val_pmacro.compute()
             )
             p_micro = (
-                self.val_pmicro(pred, labels) if is_step else self.val_pmicro.compute()
+                self.val_pmicro(pred, labels) if on_step else self.val_pmicro.compute()
             )
             r_macro = (
-                self.val_rmacro(pred, labels) if is_step else self.val_rmacro.compute()
+                self.val_rmacro(pred, labels) if on_step else self.val_rmacro.compute()
             )
             r_micro = (
-                self.val_rmicro(pred, labels) if is_step else self.val_rmicro.compute()
+                self.val_rmicro(pred, labels) if on_step else self.val_rmicro.compute()
             )
 
         if is_write:
@@ -101,7 +101,7 @@ class LitBase(pl.LightningModule):
         self.logger.experiment.add_scalar(
             "Loss/Step-Train", train_loss, self.global_step
         )
-        self.logger_metrics("Step-Train", pred, labels, self.global_step, is_step=True)
+        self.logger_metrics("Step-Train", pred, labels, self.global_step, on_step=True)
 
         return {"loss": train_loss}
 
@@ -114,19 +114,29 @@ class LitBase(pl.LightningModule):
         pred = self.forward(x)
 
         # calculating the loss
-        train_loss = self.loss_function(pred, labels)
+        val_loss = self.loss_function(pred, labels)
 
-        self.logger.experiment.add_scalar("Loss/Step-Val", train_loss, self.global_step)
+        self.logger.experiment.add_scalar("Loss/Step-Val", val_loss, self.global_step)
         self.logger_metrics(
             "Step-Val",
             pred,
             labels,
             self.global_step,
-            is_step=True,
-            is_train=False,
+            on_step=True,
+            on_train=False,
             is_write=False,
         )
-        return {"loss": train_loss}
+
+        self.log(
+            "val_loss",
+            val_loss,
+            on_step=True,
+            on_epoch=True,
+            prog_bar=True,
+            logger=True,
+        )
+
+        return {"loss": val_loss}
 
     def training_epoch_end(self, outputs):
         #  the function is called after every epoch is completed
@@ -137,7 +147,7 @@ class LitBase(pl.LightningModule):
             "Loss/Epoch-Train", avg_loss, self.current_epoch
         )
         self.logger_metrics(
-            "Epoch-Train", None, None, self.current_epoch, is_step=False
+            "Epoch-Train", None, None, self.current_epoch, on_step=False
         )
 
     def validation_epoch_end(self, outputs) -> None:
@@ -149,5 +159,5 @@ class LitBase(pl.LightningModule):
             "Loss/Epoch-Val", avg_loss, self.current_epoch
         )
         self.logger_metrics(
-            "Epoch-Val", None, None, self.current_epoch, is_step=False, is_train=False
+            "Epoch-Val", None, None, self.current_epoch, on_step=False, on_train=False
         )
