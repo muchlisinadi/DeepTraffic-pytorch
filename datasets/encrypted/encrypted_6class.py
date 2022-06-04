@@ -35,7 +35,7 @@ class Encrypted6Class(datasets.MNIST):
         ("t10k-images-idx3-ubyte.gz", ""),
         ("t10k-labels-idx1-ubyte.gz", ""),
     ]
-    classes = ["Benign", "Malign"]
+    classes = []
 
     @property
     def sub_raw_folder(self) -> str:
@@ -94,6 +94,14 @@ class Encrypted6ClassVpnSessionAllLayers(Encrypted6Class):
     """
 
     sub_raw_folder = "VpnSessionAllLayers"
+    classes = [
+        "Vpn_Chat",
+        "Vpn_Email",
+        "Vpn_File",
+        "Vpn_P2p",
+        "Vpn_Streaming",
+        "Vpn_Voip",
+    ]
 
 
 class Encrypted6ClassVpnSessionL7(Encrypted6Class):
@@ -114,6 +122,14 @@ class Encrypted6ClassVpnSessionL7(Encrypted6Class):
     """
 
     sub_raw_folder = "VpnSessionL7"
+    classes = [
+        "Vpn_Chat",
+        "Vpn_Email",
+        "Vpn_File",
+        "Vpn_P2p",
+        "Vpn_Streaming",
+        "Vpn_Voip",
+    ]
 
 
 class Encrypted6ClassVpnFlowAllLayers(Encrypted6Class):
@@ -134,6 +150,14 @@ class Encrypted6ClassVpnFlowAllLayers(Encrypted6Class):
     """
 
     sub_raw_folder = "VpnFlowAllLayers"
+    classes = [
+        "Vpn_Chat",
+        "Vpn_Email",
+        "Vpn_File",
+        "Vpn_P2p",
+        "Vpn_Streaming",
+        "Vpn_Voip",
+    ]
 
 
 class Encrypted6ClassVpnFlowL7(Encrypted6Class):
@@ -154,6 +178,14 @@ class Encrypted6ClassVpnFlowL7(Encrypted6Class):
     """
 
     sub_raw_folder = "VpnFlowL7"
+    classes = [
+        "Vpn_Chat",
+        "Vpn_Email",
+        "Vpn_File",
+        "Vpn_P2p",
+        "Vpn_Streaming",
+        "Vpn_Voip",
+    ]
 
 
 class Encrypted6ClassNovpnSessionAllLayers(Encrypted6Class):
@@ -174,6 +206,7 @@ class Encrypted6ClassNovpnSessionAllLayers(Encrypted6Class):
     """
 
     sub_raw_folder = "NovpnSessionAllLayers"
+    classes = ["Chat", "Email", "File", "P2p", "Streaming", "Voip"]
 
 
 class Encrypted6ClassNovpnSessionL7(Encrypted6Class):
@@ -194,6 +227,7 @@ class Encrypted6ClassNovpnSessionL7(Encrypted6Class):
     """
 
     sub_raw_folder = "NovpnSessionL7"
+    classes = ["Chat", "Email", "File", "P2p", "Streaming", "Voip"]
 
 
 class Encrypted6ClassNovpnFlowAllLayers(Encrypted6Class):
@@ -214,6 +248,7 @@ class Encrypted6ClassNovpnFlowAllLayers(Encrypted6Class):
     """
 
     sub_raw_folder = "NovpnFlowAllLayers"
+    classes = ["Chat", "Email", "File", "P2p", "Streaming", "Voip"]
 
 
 class Encrypted6ClassNovpnFlowL7(Encrypted6Class):
@@ -234,3 +269,4 @@ class Encrypted6ClassNovpnFlowL7(Encrypted6Class):
     """
 
     sub_raw_folder = "NovpnFlowL7"
+    classes = ["Chat", "Email", "File", "P2p", "Streaming", "Voip"]
